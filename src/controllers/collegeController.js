@@ -1,6 +1,6 @@
 const CollegeModel = require("../models/collegeModel");
 const InternModel = require("../models/internModel");
-const { isValid } = require("../validation/validation")
+const { isValid, isValidLogoLink } = require("../validation/validation")
 
 //============================post api-1 ==============================>>>
 const createCollege = async function (req, res) {
@@ -18,7 +18,7 @@ const createCollege = async function (req, res) {
 
         if (!isValid(fullName)) { return res.status(400).send({ status: false, message: "Full name is required" }) }
 
-        if (!isValid(logoLink)) { return res.status(400).send({ status: false, message: "Logo is required" }) }
+        if (!isValidLogoLink(logoLink)) { return res.status(400).send({ status: false, message: "Appropriate Logo link is required" }) }
 
         const newCollege = await CollegeModel.create(data);
         let obj = {
