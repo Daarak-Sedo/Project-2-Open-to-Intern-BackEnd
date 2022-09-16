@@ -2,7 +2,7 @@ const InternModel = require("../models/internModel");
 const CollegeModel = require("../models/collegeModel")
 const {isValid,isRightFormatemail,isRightFormatmobile}=require("../validation/validation")
 
-
+//============================post api-2 ==============================>>>
 const createInterns = async function (req, res) {
     try {
         let data = req.body
@@ -41,7 +41,6 @@ const createInterns = async function (req, res) {
             mobile:newIntern.mobile,
             collegeId :newIntern.collegeId,
             isDeleted:newIntern.isDeleted
-
         }
         return res.status(201).send({ status: true, message: obj })
     }
@@ -49,9 +48,6 @@ const createInterns = async function (req, res) {
         console.log(error)
         return res.status(500).send({ message: error.message })
     }
-
 }
-
-
 
 module.exports.createInterns = createInterns;

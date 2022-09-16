@@ -1,4 +1,3 @@
-
 const isValid = function (value) {
     if (typeof (value) === undefined ||typeof (value) === null) { return false }
     if ((value).length == 0) { return false }

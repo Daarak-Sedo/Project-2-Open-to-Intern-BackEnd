@@ -2,7 +2,7 @@ const CollegeModel = require("../models/collegeModel");
 const InternModel = require("../models/internModel");
 const { isValid } = require("../validation/validation")
 
-
+//============================post api-1 ==============================>>>
 const createCollege = async function (req, res) {
     try {
         let data = req.body;
@@ -20,14 +20,12 @@ const createCollege = async function (req, res) {
 
         if (!isValid(logoLink)) { return res.status(400).send({ status: false, message: "Logo is required" }) }
 
-
         const newCollege = await CollegeModel.create(data);
         let obj = {
             name: newCollege.name,
             fullName: newCollege.fullName,
             logoLink: newCollege.logoLink,
             isDeleted: newCollege.isDeleted
-
         }
         return res.status(201).send({ status: true, message: obj })
     }
@@ -37,7 +35,7 @@ const createCollege = async function (req, res) {
     }
 }
 
-
+//============================get api ==============================>>>
 const getColleges = async function (req, res) {
     try {
         let cName = req.query.collegeName
@@ -54,28 +52,19 @@ const getColleges = async function (req, res) {
 
         let result = await CollegeModel.find({ name: cName }).select({ name: 1, fullName: 1, logoLink: 1, _id: 0 })
 
-
         const internDeatils = {     // get all interns[] related to this college _id
             name: cName,
             fullName: result[0].fullName,
             logoLink: result[0].logoLink,
             interns: x
         }
-
         return res.status(200).send({ status: true, Data: internDeatils })
-
-
     }
-
-
     catch (error) {
         console.log(error)
         return res.status(500).send({ message: error.message })
     }
 }
-
-
-
 
 module.exports.createCollege = createCollege;
 module.exports.getColleges = getColleges;
