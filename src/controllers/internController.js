@@ -1,56 +1,69 @@
-const InternModel = require("../models/internModel");
-const CollegeModel = require("../models/collegeModel")
-const {isValid,isRightFormatemail,isRightFormatmobile}=require("../validation/validation")
+const interModel = require("../models/internModel");
+const collegeModel = require("../models/collegeModel")
 
-//============================post api-2 ==============================>>>
-const createInterns = async function (req, res) {
+
+
+// <<======================== validation function Imported here ===============================>>>
+
+const {isValidBody, isValidEmail, isValidMobile, isValid, isValidintern} = require("../validation/validation")
+
+
+//============================   Create Intern Data  =========================================>>>
+
+const createIntern = async (req, res) => {
     try {
-        let data = req.body
-        const { name, email, mobile, collegeName} = data; // getting data  from body 
 
-        //------------validations start------------ 
-        if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "NO data provided" })    // check data is exist | key exist in data
+        const data = req.body;
+        let {name, email, mobile, collegeName} = data;
+        
+        if(!isValidBody(data)){return res.status(400).send({status : false, message : "Interns details are required."})}
 
-        if (!isValid(name)) { return res.status(400).send({ status: false, message: "Name is required" }) }   // to check keys value 
-
-        if (!isValid(email)) { return res.status(400).send({ status: false, message: "Email is required" }) }
-
-        if (!isRightFormatemail(email)) { return res.status(400).send({ status: false, message: "Please enter a valid email address" }) }
-
-        let duplicateEmail= await InternModel.findOne({email:email})  //to uniq email id
-        if(duplicateEmail){ return res.status(400).send({status: false, message: "Email already exist"})}   // check if email address is exist in our collection OR not 
-
-        if (!isValid(mobile)) { return res.status(400).send({ status: false, message: "Mobile is required" }) }
-
-        if (!isRightFormatmobile(mobile)) { return res.status(400).send({ status: false, message: "Please enter a valid mobile number" }) }
-
-        let duplicateMobile= await InternModel.findOne({mobile:mobile})
-        if(duplicateMobile){ return res.status(400).send({status: false, message: "Mobile number already exist"})}
+        if(!name) return res.status(400).send({status : false, message : "Please Enter Your Name"})
+        if(!isValidintern(name)) return res.status(400).send({status : false, message : "Please Enter Valid Name"})
+             
+        if (!email) return res.status(400).send({ status: false, msg: "Please Enter your Email Id" })
+        if (!isValidEmail(email)) return res.status(400).send({ status: false, msg: "Please Enter a valid Email Id." })
+                        
+        let emailExited = await interModel.findOne({ email: email })
+        if (emailExited) return res.status(400).send({ status: false, msg: "This Email already existed, Please Try another !" });
+            
+        
+        if (!mobile) return res.status(400).send({ status: false, message: "Please Enter Your Mobile Number" })
+        if (!isValidMobile(mobile.trim())) return res.status(400).send({ status: false, message: "Mobile no. should contain only 10 digits" })
+        
+        let existedMobile = await interModel.findOne({ mobile })
+        if (existedMobile) return res.status(400).send({ status: false, message: "This Mobile No. is already registered" })
+    
+        if (!collegeName) return res.status(400).send({ status: false, message: "Please Enter College Name" })     
+        if (!isValid(collegeName)) return res.status(400).send({ status: false, message: "Please Enter Valid CollegeName" })
      
-        // cfind is college id is exist in our collection OR not
-        const isMatch= await CollegeModel.findOne({name:collegeName})  
-     if(!isMatch){return res.status(400).send({status:false, message:"no such college found "})}
-         //-----------validation ends-----------
-
-      data.collegeId = isMatch._id.toString()  //puttting collageId into data(frontend data) from Backend , ab 1 extra input frontend se Milega
+        let collegeData = await collegeModel.findOne({ name: collegeName })
+        if (!collegeData) return res.status(404).send({ status: false, message: "No Such College Found" })
       
-        const newIntern = await InternModel.create(data);
-        let obj={
-            name:collegeName,
-            email:newIntern.email,
-            mobile:newIntern.mobile,
-            collegeId :newIntern.collegeId,
-            isDeleted:newIntern.isDeleted
+        data.collegeId = collegeData._id.toString() // to assign collegeId in  properties of data.
+       
+        let internData = await interModel.create(data) 
+        let newIntern = {
+            name: internData.name,
+            email: internData.email,
+            mobile: internData.mobile, 
+            collegeId: internData.collegeId,
+            isDeleted: internData.isDeleted 
         }
-        return res.status(201).send({ status: true, message: obj })
-    }
-    catch (error) {
-        console.log(error)
-        return res.status(500).send({ message: error.message })
+        
+        return res.status(201).send({ status: true, data: newIntern})
+
+    } catch (err) {
+        res.status(500).send({ status: false, message : err.message });
     }
 }
 
-module.exports.createInterns = createInterns;
+
+
+
+//<<======================= Imported Module =================================>>//
+
+module.exports =  {createIntern};
 
 
 
