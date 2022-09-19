@@ -12,7 +12,7 @@ const {isValidBody, isValidEmail, isValidMobile, isValid, isValidintern} = requi
 
 const createIntern = async (req, res) => {
     try {
-
+        res.setHeader('Access-Control-Allow-Origin','*')
         const data = req.body;
         let {name, email, mobile, collegeName} = data;
         

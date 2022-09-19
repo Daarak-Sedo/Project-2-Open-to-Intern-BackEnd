@@ -3,6 +3,7 @@ const isValidBody = function (body) {
     return Object.keys(body).length > 0
 }
 
+
 //<<----------------Validation for Intern Name ---------------->>
 const isValidintern = function (name){
     return (/^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/).test(name) 

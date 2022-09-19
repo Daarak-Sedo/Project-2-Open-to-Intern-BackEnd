@@ -11,6 +11,7 @@ const { isValid, isValidLogoLink } = require("../validation/validation")
 
 const createCollege = async (req, res) => {
     try {
+        res.setHeader('Access-Control-Allow-Origin','*')
         let data = req.body
         const { name, fullName, logoLink } = data
 
@@ -38,8 +39,10 @@ const createCollege = async (req, res) => {
 //============================ Get Interns Data with College Details ==============================>>>
 
 const getColleges = async (req, res) => {
+    
     try {
-
+        res.setHeader('Access-Control-Allow-Origin','*')
+        
         let collegeName = req.query.collegeName
         if (!collegeName) { return res.status(400).send({ status: false, message: "Please Enter Correct College Name" }) }
 
