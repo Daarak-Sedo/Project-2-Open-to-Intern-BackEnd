@@ -7,7 +7,7 @@ const interModel = require("../models/internModel");
 const { isValid, isValidLogoLink } = require("../validation/validation")
 
 
-//=======================================  Create College   ==============================>>>
+//=======================================  Create College   ==================================>>>
 
 const createCollege = async (req, res) => {
     try {

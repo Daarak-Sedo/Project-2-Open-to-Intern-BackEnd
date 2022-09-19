@@ -31,6 +31,3 @@ const collegeSchema = new mongoose.Schema(
 
 module.exports = mongoose.model("internProject_college", collegeSchema);
 
-
-
-

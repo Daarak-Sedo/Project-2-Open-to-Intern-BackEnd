@@ -8,7 +8,7 @@ const collegeModel = require("../models/collegeModel")
 const {isValidBody, isValidEmail, isValidMobile, isValid, isValidintern} = require("../validation/validation")
 
 
-//============================   Create Intern Data  =========================================>>>
+//===============================   Create Intern Data  =========================================>>>
 
 const createIntern = async (req, res) => {
     try {

@@ -22,6 +22,7 @@ router.get("/functionup/collegeDetails", collegeController.getColleges);
 
 
 
+
 //API for wrong route-of-API
 router.all("/*", function (req, res) {
     res.status(400).send({
