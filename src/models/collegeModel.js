@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-
-
 const collegeSchema = new mongoose.Schema(
   {
     name: {
@@ -26,8 +24,8 @@ const collegeSchema = new mongoose.Schema(
       default: false,
       trim: true,
     },
-    
-  },{ timestamps: true });
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("college", collegeSchema);
-
